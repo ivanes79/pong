@@ -38,6 +38,9 @@ class Pelota:
         self.color = color
         self.vx = vx
         self.vy = vy
+        self.contadorderecha = 0
+        self.contadorizquierda = 0
+        self.font= pg.font.Font(None,40)
     
     def Mover(self,xmax,ymax):
         
@@ -49,10 +52,53 @@ class Pelota:
             self.vy *= -1
         #objetivo que l apelota desaparezca en los limites y aparezca rebotando hacia el lado contrario
 
-        if  self.pos_x >= xmax+self.radio*10 or self.pos_x <= 0 - self.radio*10 :
+        if self.pos_x >= xmax+self.radio*10: #limite derecha
+            self.contadorizquierda += 1
+            self.vx *= -1
+            self.vy *= -1
+            
+
+        if self.pos_x <= 0 - self.radio*10 : #limite izquierda
+            self.contadorderecha += 1
             self.vx *= -1
             self.vy *= -1
 
+    def marcador(self,pantalla_principal):
+        #font= pg.font.Font(None,40) fuera del while
+        # dentro del while
+        marcador_derecha = self.font.render(str(self.contadorizquierda),0,(255,255,0))
+        marcador_izquierda = self.font.render(str(self.contadorderecha),0,(255,255,0))
+        pantalla_principal.blit(marcador_derecha,(200,50))
+        pantalla_principal.blit(marcador_izquierda,(600,50))
+
+    def posicionX(self):
+
+        return self.pos_x + self.radio 
+    
+    def posicionY(self):
+        return self.pos_y + self.radio 
+
+    def izquierda(self):       
+        if self.pos_x < 400 :
+            return True
+        return False
+
+    def derecha(self): 
+        if self.pos_x > 400 :
+            return True
+        return False 
+
+    def arriba(self):
+        if self.pos_y < 300 :
+            return True
+        return False 
+
+
+    def abajo(self):
+        if self.pos_y > 300 :
+            return True
+        return False  
+ 
 
         '''
         if  self.pos_x >= xmax-self.radio or self.pos_x <= 0 + self.radio :
