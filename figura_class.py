@@ -27,8 +27,21 @@ class Raqueta:
         if estado_teclas[tecla_arriba] == True and self.pos_y > (y_min+self.h//2):
             self.pos_y -= 1
         if estado_teclas[tecla_abajo] == True and self.pos_y < (y_max-self.h//2) :
-            self.pos_y += 1  
-        
+            self.pos_y += 1 
+
+
+    @property # para poder tratar estas funciones como variables , sin ()
+    def derecha(self):
+        return self.pos_x + self.w//2
+    @property
+    def izquierda(self):
+        return self.pos_x - self.w//2
+    @property
+    def arriba(self):
+        return self.pos_y - self.h//2
+    @property
+    def abajo(self):
+        return self.pos_y + self.h//2    
 
 class Pelota:
     def __init__(self,pos_x,pos_y,radio=20,color=(255,255,255),vx=1,vy=1):
@@ -54,12 +67,20 @@ class Pelota:
 
         if self.pos_x >= xmax+self.radio*10: #limite derecha
             self.contadorizquierda += 1
+
+            self.pos_x = xmax//2
+            self.pos_y = ymax//2
+
             self.vx *= -1
             self.vy *= -1
             
 
         if self.pos_x <= 0 - self.radio*10 : #limite izquierda
             self.contadorderecha += 1
+
+            self.pos_x = xmax//2
+            self.pos_y = ymax//2            
+
             self.vx *= -1
             self.vy *= -1
 
@@ -71,6 +92,46 @@ class Pelota:
         pantalla_principal.blit(marcador_derecha,(200,50))
         pantalla_principal.blit(marcador_izquierda,(600,50))
 
+
+    @property # para poder tratar estas funciones como variables , sin ()
+    def derecha(self):
+        return self.pos_x + self.radio
+    @property
+    def izquierda(self):
+        return self.pos_x - self.radio
+    @property
+    def arriba(self):
+        return self.pos_y - self.radio
+    @property
+    def abajo(self):
+        return self.pos_y + self.radio
+
+    def comprobar_choque(self,r1,r2):
+        if self.derecha >= r2.izquierda and \
+            self.izquierda <= r2.derecha and \
+            self.abajo >= r2.arriba and \
+            self.arriba <= r2.abajo:
+            self.vx *= -1
+
+
+        if self.derecha >= r1.izquierda and \
+            self.izquierda <= r1.derecha and \
+            self.abajo >= r1.arriba and \
+            self.arriba <= r1.abajo:
+            self.vx *= -1
+    def comprobar_choque2(self,*raquetas):
+        for r in raquetas:
+
+            if self.derecha >= r.izquierda and \
+                self.izquierda <= r.derecha and \
+                self.abajo >= r.arriba and \
+                self.arriba <= r.abajo:
+                    self.vx *= -1
+                    break #o return
+
+
+
+    '''
     def posicionX(self):
 
         return self.pos_x + self.radio 
@@ -98,15 +159,15 @@ class Pelota:
         if self.pos_y > 300 :
             return True
         return False  
- 
+    '''
 
-        '''
+    '''
         if  self.pos_x >= xmax-self.radio or self.pos_x <= 0 + self.radio :
             self.vx *= -1
             
         if  self.pos_y >= ymax-self.radio or self.pos_y <= 0 + self.radio :
             self.vy *= -1
-        '''
+    '''
 
 
     def dibujar(self,pantalla):
