@@ -1,7 +1,7 @@
 import pygame as pg
-
+from utils import BLANCO
 class Pelota:
-    def __init__(self,pos_x,pos_y,radio=20,color=(255,255,255),vx=1,vy=1):
+    def __init__(self,pos_x,pos_y,radio=20,color=BLANCO,vx=1,vy=1):
         self.pos_x = pos_x
         self.pos_y =pos_y 
         self.radio = radio
@@ -78,19 +78,9 @@ class Pelota:
                self.arriba <= r.abajo:
                     self.vx *= -1
                     break
-   
-
-
-              
-    
-
-            
-
-
-
 
 class Raqueta:
-    def __init__(self,pos_x,pos_y,w=20,h=100,color=(255,255,255),vx=1,vy=1):
+    def __init__(self,pos_x,pos_y,w=20,h=100,color=BLANCO,vx=5,vy=5):
         self.pos_x = pos_x
         self.pos_y =pos_y 
         self.w = w
