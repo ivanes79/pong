@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-pg.init()
+pg.init()#cuando se importa init se inicia pygame automatico
 
 
 ANCHO = 800

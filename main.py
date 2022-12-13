@@ -1,6 +1,4 @@
 
-import pygame as pg
-from pantallas import Partida,Menu,Resultado,Records
 from scene_controller import SceneController
 
 inicio = SceneController()
@@ -8,6 +6,7 @@ inicio.start()
 '''
 menu = Menu()
 menu.bucle_pantalla()
+
 records = Records()
 records.bucle_pantalla()
 #juego = Partida()#creamos el objeto de clase partida

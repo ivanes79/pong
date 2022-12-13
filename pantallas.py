@@ -5,14 +5,18 @@ from utils import *
 
 
 class Partida:
-    def __init__(self):
+    def __init__(self,pantalla,refresco):
        
-        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
-        pg.display.set_caption("Pong")
-        self.tasa_refresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasa_refresco = refresco
+
         self.pelota = Pelota(ANCHO//2,ALTO//2,vx=2,vy=2)
+        
         self.raqueta1 = Raqueta(10,ALTO//2,vy=5)
-        self.raqueta2 = Raqueta(ANCHO-10,ALTO//2,vy=5)
+        self.raqueta1.direccion = 'izqda'
+        self.raqueta2 = Raqueta(ANCHO-20,ALTO//2,vy=5)
+        self.raqueta2.direccion = 'drcha'
+        
         self.font = pg.font.Font("fonts/pressStart2P.ttf", 15)
         self.fuenteTemp = pg.font.Font("fonts/pressStart2P.ttf",30) 
         self.marcador1 = 0
@@ -23,8 +27,9 @@ class Partida:
         self.contadorFotograma=0
         self.sonido = pg.mixer.Sound("sounds/pelota.mp3")
         
+        
 
-    def bucle_fotograma(self):
+    def bucle_pantalla(self):
         #reinicio de estos parametros
         self.temporizador = TIEMPO_LIMITE    
         self.marcador1 = 0
@@ -52,7 +57,6 @@ class Partida:
            
             
             self.pelota.comprobar_choqueV2(self.raqueta2,self.raqueta1)
-            self.sonido.play()
             self.sonido.stop()
 
 
@@ -136,11 +140,11 @@ class Partida:
             return f"Empate, resultado Jugador1: {self.marcador2} Jugador2: {self.marcador1}"
 
 class Menu:
-    def __init__(self):
+    def __init__(self,pantalla,refresco):
         
-        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
-        pg.display.set_caption("Menu")
-        self.tasa_refresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasa_refresco = refresco
+
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.fuenteMenu = pg.font.Font("fonts/pressStart2P.ttf", 20)
         self.musica = pg.mixer.Sound("sounds/inicio.mp3")
@@ -159,10 +163,13 @@ class Menu:
 
                 if evento.type == pg.KEYDOWN:#pulsa enter
                     if evento.key == pg.K_RETURN:
-                        game_over = True#con esto cierra la ventaja de menu
-                    elif evento.key == pg.K_r:  
-                        game_over = True
-                         
+                        #game_over = True
+                        self.musica.stop()
+                        return "jugar"
+                    elif evento.key == pg.K_r:
+                        self.musica.stop()  
+                        #game_over = True
+                        return "records" 
 
             self.pantalla_principal.blit(self.imagenFondo,(0,0))
             jugar = self.fuenteMenu.render("Pulsa ENTER para jugar",0,GRANATE)
@@ -173,14 +180,13 @@ class Menu:
         self.musica.stop()
 
 class Resultado:
-    def __init__(self):
+    def __init__(self,pantalla,refresco):
         
-        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
-        pg.display.set_caption("Resultado")
-        self.tasa_refresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasa_refresco = refresco
+
         self.fuenteResultado = pg.font.Font("fonts/pressStart2P.ttf", 12)
         self.resultado = ""
-
 
     def bucle_pantalla(self):
         game_over = False
@@ -208,11 +214,10 @@ class Resultado:
 
 
 class Records:
-    def __init__(self):
+    def __init__(self,pantalla,refresco):
       
-        self.pantalla_principal = pg.display.set_mode( (ANCHO,ALTO) )
-        pg.display.set_caption("Records")
-        self.tasa_refresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasa_refresco = refresco
         self.fuenteResultado = pg.font.Font("fonts/pressStart2P.ttf", 12)
 
     def bucle_pantalla(self):
@@ -224,16 +229,15 @@ class Records:
                     #game_over = True
                     return True
 
-            if evento.type == pg.KEYDOWN:#pulsa enter
-                if evento.key == pg.K_RETURN:
-                    game_over = True#con esto cierra la ventaja de resultado        
+                if evento.type == pg.KEYDOWN:#pulsa enter
+                    if evento.key == pg.K_RETURN:
+                        game_over = True#con esto cierra la ventaja de resultado        
 
         
             self.pantalla_principal.fill(BLANCO)
             result = self.fuenteResultado.render("RECORDS",0,GRANATE)
             self.pantalla_principal.blit(result, (135,ALTO//2) )
             pg.display.flip()
-            
        
 
    
